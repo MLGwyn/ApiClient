@@ -17,7 +17,15 @@ namespace ApiClient
 
             foreach (var joke in jokes)
             {
-                Console.WriteLine($"\n-{joke.Setup}\n\n-{joke.PunchLine}\n");
+                Console.WriteLine($"\n-{joke.Setup}\n");
+            }
+
+            Console.Write("Press ENTER for punch line");
+            Console.ReadLine();
+
+            foreach (var joke in jokes)
+            {
+                Console.WriteLine($"\n-{joke.PunchLine}\n");
             }
         }
 
@@ -28,7 +36,10 @@ namespace ApiClient
             var responseAsStream = await client.GetStreamAsync(url);
             var joke = await JsonSerializer.DeserializeAsync<Joke>(responseAsStream);
 
-            Console.WriteLine($"\n-{joke.Setup}\n\n-{joke.PunchLine}\n");
+            Console.WriteLine($"\n-{joke.Setup}\n");
+            Console.Write("Press ENTER for punchline");
+            Console.ReadLine();
+            Console.WriteLine($"\n-{joke.PunchLine}\n");
         }
 
         static async Task Main(string[] args)
