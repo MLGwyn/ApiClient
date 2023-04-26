@@ -10,9 +10,5 @@ namespace ApiClient
         public string Setup { get; set; }
         [JsonPropertyName("punchline")]
         public string PunchLine { get; set; }
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-
-
     }
 }
