@@ -3,40 +3,22 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ConsoleTables;
 
 namespace ApiClient
 {
     class Program
     {
-        static async Task TellAGeneralJoke()
+        static async Task TellAJoke(string type)
         {
             var client = new HttpClient();
-            var url = "https://official-joke-api.appspot.com/jokes/general/random";
+            var url = $"https://official-joke-api.appspot.com/jokes/{type}/random";
             var responseAsStream = await client.GetStreamAsync(url);
             var jokes = await JsonSerializer.DeserializeAsync<List<Joke>>(responseAsStream);
-            var table = new ConsoleTable("Type:", "Setup:", "PunchLine:");
 
             foreach (var joke in jokes)
             {
-                table.AddRow(joke.Type, joke.Setup, joke.PunchLine);
+                Console.WriteLine($"\n-{joke.Setup}\n\n-{joke.PunchLine}\n");
             }
-            table.Write(Format.Minimal);
-        }
-
-        static async Task TellAProgrammingJoke()
-        {
-            var client = new HttpClient();
-            var url = "https://official-joke-api.appspot.com/jokes/programming/random";
-            var responseAsStream = await client.GetStreamAsync(url);
-            var jokes = await JsonSerializer.DeserializeAsync<List<Joke>>(responseAsStream);
-            var table = new ConsoleTable("Type:", "Setup:", "PunchLine:");
-
-            foreach (var joke in jokes)
-            {
-                table.AddRow(joke.Type, joke.Setup, joke.PunchLine);
-            }
-            table.Write(Format.Minimal);
         }
 
         static async Task TellARandomJoke()
@@ -45,10 +27,8 @@ namespace ApiClient
             var url = "https://official-joke-api.appspot.com/jokes/random";
             var responseAsStream = await client.GetStreamAsync(url);
             var joke = await JsonSerializer.DeserializeAsync<Joke>(responseAsStream);
-            var table = new ConsoleTable("Type:", "Setup:", "PunchLine:");
 
-            table.AddRow(joke.Type, joke.Setup, joke.PunchLine);
-            table.Write(Format.Minimal);
+            Console.WriteLine($"\n-{joke.Setup}\n\n-{joke.PunchLine}\n");
         }
 
         static async Task Main(string[] args)
@@ -70,11 +50,11 @@ namespace ApiClient
                         var type = Console.ReadLine().ToUpper();
                         if (type == "P")
                         {
-                            await TellAProgrammingJoke();
+                            await TellAJoke("programming");
                         }
                         else if (type == "G")
                         {
-                            await TellAGeneralJoke();
+                            await TellAJoke("general");
                         }
                         else if (type == "S")
                         {
